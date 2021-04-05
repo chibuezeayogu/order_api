@@ -3,6 +3,7 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import morgan from 'morgan';
 import routes from './routes/index';
+import { routeNotFound, errorHandler } from './middleware/errorHandlers';
 
 config();
 
@@ -16,6 +17,8 @@ app.use(
 );
 
 app.use('/api/v1', routes);
+app.use(routeNotFound, errorHandler);
+
 app.listen(PORT, () => {
   console.log(`App listing on http://localhost:${PORT}`);
 })
