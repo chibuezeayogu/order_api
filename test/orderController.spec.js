@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import app from '../src/server';
 import db from '../src/config/db';
 import ordersCollection from './mockData/orderCollection';
+import { completeData, missingTitle } from './mockData/orderCreate';
 
 const request = supertest(app);
 
@@ -99,6 +100,33 @@ describe('OrdersController', () => {
       expect(body.success).to.eql(true)
       expect(body.message).to.eql('Updated successfuly')
       expect(body.data.title).to.eql('Order title 1 Updated')
+    })
+  })
+
+  describe('POST Order: /api/vi/orders', () => {
+    it('should return a validation error message if some input are not provided', async () => {
+      const { body } = await request
+        .post(`/api/v1/orders`)
+        .send(missingTitle)
+        .expect(422);
+      
+      expect(body.success).to.eql(false)
+      expect(body.message[0].msg).to.eql('Title is required')
+      expect(body.message[0].param).to.eql('title')
+      expect(body.message[0].location).to.eql('body')
+    })
+  })
+
+  describe('POST Order: /api/vi/orders/:id', () => {
+    it('should return created order with all inputs are provided', async () => {
+      const { body } = await request
+        .post(`/api/v1/orders`)
+        .send(completeData)
+        .expect(201);
+
+      expect(body.success).to.eql(true)
+      expect(body.message).to.eql('Order created successfully')
+      expect(body.data.title).to.eql(completeData.title)
     })
   })
 })
