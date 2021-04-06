@@ -1,5 +1,13 @@
 import ordersSevice from '../services/OrdersService';
-import { resourceSuccess, resourceNotFound } from '../helpers/responseHandler';
+import {
+  formatCreateData,
+  formatUpdateData
+} from '../utils/formatData';
+import {
+  resourceSuccess,
+  resourceNotFound,
+  resourceCreated
+} from '../helpers/responseHandler';
 class OrderController {
 
   constructor(ordersSevice) {
@@ -59,12 +67,22 @@ class OrderController {
     const { id } = req.params;
     const [error, orderId, order] = await this
       .ordersSevice.
-      updateOrderInfo(req.body, id);
+      updateOrderInfo(formatUpdateData(req.body), id);
 
     if (orderId) return resourceNotFound(res, orderId);
     if (error) return next(error);
     
     return resourceSuccess(res, order, 'Updated successfuly');
+  }
+
+  createOrder = async (req, res, next) => {
+    const [error, order] = await this
+      .ordersSevice
+      .addOrder(formatCreateData(req.body))
+    
+    if (error) return next(error);
+
+    return resourceCreated(res, order);
   }
 }
 

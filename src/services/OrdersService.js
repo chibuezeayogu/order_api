@@ -1,4 +1,3 @@
-import { async } from 'regenerator-runtime';
 import db from '../config/db';
 class OrderService {
 
@@ -59,9 +58,8 @@ class OrderService {
    * 
    * @returns Response
    */
-  updateOrderInfo = async (body, orderId) => {
+  updateOrderInfo = async (values, orderId) => {
     try {
-      const { title, bookingDate } = body;
       const doc = await this.orderRef
         .doc(orderId)
         .get();
@@ -69,11 +67,33 @@ class OrderService {
       if (!doc.exists) return [null, orderId, null];
       await this.orderRef
         .doc(orderId)
-        .update({ title, bookingDate });
+        .update(values);
 
-      return [null, null, { ...doc.data(), ...body }];
+      return [null, null, { ...doc.data(), ...values}];
     } catch (error) {
       return [error, null, null];
+    }
+  }
+
+  /**
+   * Create order with provided values
+   * return order if successful
+   * else return error
+   * 
+   * @param {object} values 
+   * 
+   * @returns Response
+   */
+  addOrder = async (values) => {
+    try {
+      await this
+        .orderRef
+        .doc(values.uid)
+        .set(values);
+
+      return [null, values]
+    } catch (error) {
+      return [error, null];
     }
   }
 }
