@@ -48,8 +48,8 @@ export const resourceNotFound = (res, orderId) => {
  */
 export const resourceSuccess = (res, orders, message = '') => {
   let data = { success: true, data: orders };
-  if (!message === '') {
-    data[message] = message
+  if (message !== '') {
+    data['message'] = message;
   }
   res
     .status(OK)

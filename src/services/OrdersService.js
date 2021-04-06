@@ -50,6 +50,32 @@ class OrderService {
       return [error, null, null];
     }
   }
+
+  /**
+   * Update order record
+   * 
+   * @param {object} body 
+   * @param {string} id 
+   * 
+   * @returns Response
+   */
+  updateOrderInfo = async (body, orderId) => {
+    try {
+      const { title, bookingDate } = body;
+      const doc = await this.orderRef
+        .doc(orderId)
+        .get();
+        
+      if (!doc.exists) return [null, orderId, null];
+      await this.orderRef
+        .doc(orderId)
+        .update({ title, bookingDate });
+
+      return [null, null, { ...doc.data(), ...body }];
+    } catch (error) {
+      return [error, null, null];
+    }
+  }
 }
 
 export default new OrderService(db);
