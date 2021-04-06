@@ -1,3 +1,4 @@
+import "regenerator-runtime/runtime.js";
 import express, { json, urlencoded } from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
