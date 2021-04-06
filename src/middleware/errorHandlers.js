@@ -14,7 +14,7 @@ const { NOT_FOUND, INTERNAL_SERVER_ERROR } = StatusCodes;
  * @returns {Response} not found error
  */
 export const routeNotFound = (req, res, next) => {
-  const error = new Error(`Route -> '${req.originalUrl}' not found'`);
+  const error = new Error(`Route -> ${req.method}:${req.originalUrl} not found'`);
   res.status(NOT_FOUND);
   next(error);
 };

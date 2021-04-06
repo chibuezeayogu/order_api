@@ -52,12 +52,13 @@ class OrderService {
   }
 
   /**
-   * Update order record
+   * Update order title and bockingDate
+   * return updated order
    * 
    * @param {object} body 
    * @param {string} id 
    * 
-   * @returns Response
+   * @returns Response update order
    */
   updateOrderInfo = async (body, id) => {
     try {
@@ -67,11 +68,11 @@ class OrderService {
         .get();
         
       if (!doc.exists) return [null, orderId, null];
-      await this.orderRef
+      const order = await this.orderRef
         .doc(id)
-        .update({ title, bookingDate });
+        .update({ title: title, bookingDate: bookingDate });
 
-      return [null, null, { ...doc.data(), ...body }];
+      return [null, null, order.data()];
     } catch (error) {
       return [error, null, null];
     }
