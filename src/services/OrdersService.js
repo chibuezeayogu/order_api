@@ -59,16 +59,16 @@ class OrderService {
    * 
    * @returns Response
    */
-  updateOrderInfo = async (body, id) => {
+  updateOrderInfo = async (body, orderId) => {
     try {
       const { title, bookingDate } = body;
       const doc = await this.orderRef
-        .doc(id)
+        .doc(orderId)
         .get();
         
       if (!doc.exists) return [null, orderId, null];
       await this.orderRef
-        .doc(id)
+        .doc(orderId)
         .update({ title, bookingDate });
 
       return [null, null, { ...doc.data(), ...body }];

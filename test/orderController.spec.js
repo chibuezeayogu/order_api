@@ -33,6 +33,7 @@ describe('OrdersController', () => {
       expect(body.data[0].uid).to.eql("hKlIKPoZc2xCKGTUKZK01")
     })
   })
+
   describe('GET Order: /api/vi/orders/:id', () => {
     it('should return an error message if an invalid Id is passed', async () => {
       const { body } = await request
@@ -43,6 +44,7 @@ describe('OrdersController', () => {
       expect(body.message).to.eql('Order with Id=wrong_id not found')
     })
   })
+
   describe('GET Order: /api/vi/orders/:id', () => {
     it('should return an order matching the param id', async () => {
       const { body } = await request
@@ -52,6 +54,51 @@ describe('OrdersController', () => {
       expect(body.success).to.eql(true)
       expect(body.data.title).to.eql('Order title 1')
       expect(body.data.uid).to.eql("hKlIKPoZc2xCKGTUKZK01")
+    })
+  })
+
+  describe('PUT Order: /api/vi/orders/:id', () => {
+    it('should return validation error if title or bookingDate is not provided', async () => {
+      const { body } = await request
+        .put(`/api/v1/orders/hKlIKPoZc2xCKGTUKZK01`)
+        .send({ title: "Order title 1 Updated"})
+        .expect(422);
+      
+      expect(body.success).to.eql(false)
+      expect(body.message[0].msg).to.eql('bookingDate is required')
+      expect(body.message[0].param).to.eql('bookingDate')
+      expect(body.message[0].location).to.eql('body')
+    })
+  })
+
+  describe('PUT Order: /api/vi/orders/:id', () => {
+    it('should return an error message if a valid params is provided with invalid order Id', async () => {
+      const { body } = await request
+        .put(`/api/v1/orders/wrong_id`)
+        .send({
+          title: "Order title 1 Updated",
+          bookingDate: 1554284950000
+        })
+        .expect(404);
+      
+      expect(body.success).to.eql(false)
+      expect(body.message).to.eql('Order with Id=wrong_id not found')
+    })
+  })
+
+  describe('PUT Order: /api/vi/orders/:id', () => {
+    it('should return an updated order matching the order param provided', async () => {
+      const { body } = await request
+        .put(`/api/v1/orders/hKlIKPoZc2xCKGTUKZK01`)
+        .send({
+          title: "Order title 1 Updated",
+          bookingDate: 1554284950000
+        })
+        .expect(200);
+
+      expect(body.success).to.eql(true)
+      expect(body.message).to.eql('Updated successfuly')
+      expect(body.data.title).to.eql('Order title 1 Updated')
     })
   })
 })
