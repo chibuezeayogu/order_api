@@ -7,19 +7,21 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint ./src --ext .js",
-    "dev-server": "NODE_ENV=test nodemon --exec babel-node src/server.js"
+    "dev-server": "NODE_ENV=development nodemon --exec babel-node src/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
+    "firebase-admin": "^9.6.0",
     "firebase-mock": "^2.3.2",
     "http-status-codes": "^2.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/node": "^7.13.13",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/preset-env": "^7.13.12",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",

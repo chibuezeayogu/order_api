@@ -46,14 +46,14 @@ export const resourceNotFound = (res, orderId) => {
  * 
  * @returns {Response} orders/order
  */
-export const resourceSuccess = (res, orders, message = "") => {
+export const resourceSuccess = (res, orders, message = '') => {
+  let data = { success: true, data: orders };
+  if (!message === '') {
+    data[message] = message
+  }
   res
     .status(OK)
-    .json({
-      success: true,
-      message: message,
-      data: orders
-    })
+    .json(data);
 }
 
 /**
