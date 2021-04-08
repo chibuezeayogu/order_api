@@ -21,9 +21,9 @@ Order API is an order management app with minimal functionality. It allows a use
 
 ## App Features
 - GET All Orders`/api/v1/orders`
-- POST Order `/api/v1/order`
-- GET Order `/api/v1/order/:id`
-- PUT Order `/api/v1/order/id`
+- POST Order `/api/v1/orders`
+- GET Order `/api/v1/orders/:id`
+- PUT Order `/api/v1/orders/id`
 
 - **NOTE** This can only be tested using Postman.
 
