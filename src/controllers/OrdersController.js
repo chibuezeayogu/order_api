@@ -27,7 +27,6 @@ class OrderController {
    * @returns Response orders/error
    */
   getOrders = async (req, res, next) => {
-    console.log(req.headers.authorization)
     const [error, orders] = await this.ordersSevice.getAll();
     if (error) return next(applicationError(error, res, next));
 
