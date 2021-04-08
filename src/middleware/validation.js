@@ -52,7 +52,7 @@ export const authorizeUser = (req, res, next) => {
         req.user = user;
         return next();
       }).catch((error) => {
-        res(UNPROCESSABLE_ENTITY)
+        res.status(UNPROCESSABLE_ENTITY)
         next(error);
       });
   }
