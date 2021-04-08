@@ -2,7 +2,7 @@
 ## Introduction
 Order API is an order management app with minimal functionality. It allows a user enter certin information and save to into the system
 
-## Usage## Features
+## Features
 - Add to Order
 - View All
 - View One
