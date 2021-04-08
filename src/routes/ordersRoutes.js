@@ -3,7 +3,8 @@ import ordersController from '../controllers/OrdersController';
 import {
   updateInputValidator,
   inputValidationResult,
-  postInputValidator
+  postInputValidator,
+  authorizeUser
 } from '../middleware/validation';
 
 
@@ -11,12 +12,15 @@ const router = Router();
 router.get('/',
   ordersController.getOrders);
 router.post('/',
+  authorizeUser,
   postInputValidator,
   inputValidationResult,
   ordersController.createOrder);
 router.get('/:id',
+  authorizeUser,
   ordersController.getOrder);
 router.put('/:id',
+  authorizeUser,
   updateInputValidator,
   inputValidationResult,
   ordersController.updateOrder);
