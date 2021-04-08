@@ -10,6 +10,7 @@ import {
 
 const router = Router();
 router.get('/',
+  authorizeUser,
   ordersController.getOrders);
 router.post('/',
   authorizeUser,

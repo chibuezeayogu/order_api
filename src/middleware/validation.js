@@ -1,7 +1,9 @@
+import { StatusCodes } from 'http-status-codes'
 import { check, validationResult } from 'express-validator';
 import { validationError } from '../helpers/responseHandler';
-import db from '../config/db'
+import { adminFirebase} from '../config/db'
 
+const { UNAUTHORIZED, UNPROCESSABLE_ENTITY } = StatusCodes;
 /**
  * Return a json reponse with validation error if any
  * else returns next function
@@ -41,18 +43,19 @@ export const postInputValidator =
 
 export const authorizeUser = (req, res, next) => {
   const { authorization } = req.headers
-
   if (authorization) {
-    const [_, token] = authorization.split(' ');
-    return db
+    const token = authorization.split(' ')[1] // Bearer + token
+    return adminFirebase
       .auth()
       .verifyIdToken(token)
       .then((user) => {
         req.user = user;
         return next();
       }).catch((error) => {
+        res(UNPROCESSABLE_ENTITY)
         next(error);
       });
   }
-  return next({ error: { message: 'User is not authorised to view resource' } })
+  res.status(UNAUTHORIZED)
+  return next(new Error('User is not authorised to view this resource'))
 } 
