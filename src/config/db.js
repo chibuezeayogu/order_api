@@ -4,11 +4,11 @@ import FirestoreMock from 'firestore-mock';
 import firebaseConfig from './firebaseConfig';
 
 config();
-firebase.initializeApp({
+export const adminFirebase = firebase.initializeApp({
   credential: firebase.credential.cert(firebaseConfig),
   databaseURL: process.env.DATABASE_URL
 })
 
-const db = process.env.NODE_ENV === 'test' ? new FirestoreMock() : firebase.firestore();
+const db = process.env.NODE_ENV === 'test' ? new FirestoreMock() : adminFirebase.firestore();
 
 export default db;
