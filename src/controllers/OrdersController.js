@@ -8,6 +8,7 @@ import {
   resourceNotFound,
   resourceCreated
 } from '../helpers/responseHandler';
+import { applicationError } from '../middleware/errorHandlers';
 
 class OrderController {
 
@@ -26,8 +27,9 @@ class OrderController {
    * @returns Response orders/error
    */
   getOrders = async (req, res, next) => {
+    console.log(req.headers.authorization)
     const [error, orders] = await this.ordersSevice.getAll();
-    if (error) return next(error);
+    if (error) return next(applicationError(error, res, next));
 
     return resourceSuccess(res, orders);
   }
@@ -49,7 +51,7 @@ class OrderController {
       getOne(id);
 
     if (orderId) return resourceNotFound(res, orderId);
-    if (error) return next(error);
+    if (error) return next(applicationError(error, res, next));
     
     return resourceSuccess(res, order);
   }
@@ -71,7 +73,7 @@ class OrderController {
       updateOrderInfo(formatUpdateData(req.body), id);
 
     if (orderId) return resourceNotFound(res, orderId);
-    if (error) return next(error);
+    if (error) return next(applicationError(error, res, next));
     
     return resourceSuccess(res, order, 'Updated successfuly');
   }
@@ -81,7 +83,7 @@ class OrderController {
       .ordersSevice
       .addOrder(formatCreateData(req.body))
     
-    if (error) return next(error);
+      if (error) return next(applicationError(error, res, next));
 
     return resourceCreated(res, order);
   }

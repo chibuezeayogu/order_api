@@ -1,5 +1,6 @@
 import { check, validationResult } from 'express-validator';
 import { validationError } from '../helpers/responseHandler';
+import db from '../config/db'
 
 /**
  * Return a json reponse with validation error if any
@@ -38,3 +39,20 @@ export const postInputValidator =
     check('customer', 'Customer details is required').notEmpty()
   ]
 
+export const authorizeUser = (req, res, next) => {
+  const { authorization } = req.headers
+
+  if (authorization) {
+    const [_, token] = authorization.split(' ');
+    return db
+      .auth()
+      .verifyIdToken(token)
+      .then((user) => {
+        req.user = user;
+        return next();
+      }).catch((error) => {
+        next(error);
+      });
+  }
+  return next({ error: { message: 'User is not authorised to view resource' } })
+} 

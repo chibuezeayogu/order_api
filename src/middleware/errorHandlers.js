@@ -19,6 +19,20 @@ export const routeNotFound = (req, res, next) => {
   next(error);
 };
 
+
+/**
+ * Return a json response with route not found error and 404 status code
+ * @param {Request} req 
+ * @param {Response} res 
+ * @param {NextFunction} next
+ * 
+ * @returns {Response} not found error
+ */
+export const applicationError = (error, res, next) => {
+  res.status(INTERNAL_SERVER_ERROR);
+  next(error);
+};
+
 /**
  * Return a json response with error message and 500 status code
  * 
