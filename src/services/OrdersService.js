@@ -20,7 +20,7 @@ class OrderService {
    */
   getAll = async () => {
     try {
-      const orderRef = await this.orderRef.get();
+      const orderRef = await this.orderRef.where('uid', '>', '').get();
       const orders = orderRef.docs.map(doc => doc.data());
       return [null, orders];
     } catch (error) {
