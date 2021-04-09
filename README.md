@@ -25,7 +25,8 @@ Order API is an order management app with minimal functionality. It allows a use
 - GET Order `/api/v1/orders/:id`
 - PUT Order `/api/v1/orders/id`
 
-- **NOTE** This can only be tested using Postman.
+- **NOTE** This can be tested using any API testing application eg Postman.
+- Remember to set authorization header token. `Bearer token`
 
 ## Language
 - JavaScript
