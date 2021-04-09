@@ -1,3 +1,5 @@
+import createError from 'http-errors'
+import { StatusCodes } from 'http-status-codes'
 import ordersSevice from '../services/OrdersService';
 import {
   formatCreateData,
@@ -8,7 +10,8 @@ import {
   resourceNotFound,
   resourceCreated
 } from '../helpers/responseHandler';
-import { applicationError } from '../middleware/errorHandlers';
+
+const { INTERNAL_SERVER_ERROR } = StatusCodes;
 
 class OrderController {
 
@@ -28,7 +31,7 @@ class OrderController {
    */
   getOrders = async (req, res, next) => {
     const [error, orders] = await this.ordersSevice.getAll();
-    if (error) return next(applicationError(error, res, next));
+    if (error) return next(createError(INTERNAL_SERVER_ERROR, error));
 
     return resourceSuccess(res, orders);
   }
@@ -50,7 +53,7 @@ class OrderController {
       getOne(id);
 
     if (orderId) return resourceNotFound(res, orderId);
-    if (error) return next(applicationError(error, res, next));
+    if (error) return next(createError(INTERNAL_SERVER_ERROR, error));
     
     return resourceSuccess(res, order);
   }
@@ -72,7 +75,7 @@ class OrderController {
       updateOrderInfo(formatUpdateData(req.body), id);
 
     if (orderId) return resourceNotFound(res, orderId);
-    if (error) return next(applicationError(error, res, next));
+    if (error) return next(createError(INTERNAL_SERVER_ERROR, error));
     
     return resourceSuccess(res, order, 'Updated successfuly');
   }
@@ -82,7 +85,7 @@ class OrderController {
       .ordersSevice
       .addOrder(formatCreateData(req.body))
     
-      if (error) return next(applicationError(error, res, next));
+      if (error) return next(createError(INTERNAL_SERVER_ERROR, error));
 
     return resourceCreated(res, order);
   }

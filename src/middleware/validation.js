@@ -1,7 +1,8 @@
 import { StatusCodes } from 'http-status-codes'
+import createError from 'http-errors'
 import { check, validationResult } from 'express-validator';
 import { validationError } from '../helpers/responseHandler';
-import { adminFirebase} from '../config/db'
+import { adminFirebase } from '../config/db'
 
 const { UNAUTHORIZED, UNPROCESSABLE_ENTITY } = StatusCodes;
 /**
@@ -53,9 +54,9 @@ export const authorizeUser = (req, res, next) => {
         return next();
       }).catch((error) => {
         res.status(UNPROCESSABLE_ENTITY)
-        next(error);
+        next(createError(UNPROCESSABLE_ENTITY, error));
       });
   }
   res.status(UNAUTHORIZED)
-  return next(new Error('User is not authorised to view this resource'))
+  return next(createError(UNAUTHORIZED, 'User is not authorised to view this resource'))
 } 
