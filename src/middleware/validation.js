@@ -4,7 +4,7 @@ import { check, validationResult } from 'express-validator';
 import { validationError } from '../helpers/responseHandler';
 import { adminFirebase } from '../config/db'
 
-const { UNAUTHORIZED, UNPROCESSABLE_ENTITY } = StatusCodes;
+const { UNAUTHORIZED } = StatusCodes;
 /**
  * Return a json reponse with validation error if any
  * else returns next function
@@ -38,8 +38,12 @@ export const updateInputValidator =
 export const postInputValidator = 
   [
     ...updateInputValidator,
-    check('address', 'Address details is required').notEmpty(),
-    check('customer', 'Customer details is required').notEmpty()
+    check('address.street', 'Street is required').notEmpty(),
+    check('address.city', 'City is required').notEmpty(),
+    check('address.country', 'Country is required').notEmpty(),
+    check('customer.name', 'Name is required').notEmpty(),
+    check('customer.email', 'Phone number is required').notEmpty(),
+    check('customer.phone', 'Phone number is required').notEmpty()
   ]
 
 export const authorizeUser = (req, res, next) => {
@@ -53,8 +57,8 @@ export const authorizeUser = (req, res, next) => {
         req.user = user;
         return next();
       }).catch((error) => {
-        res.status(UNPROCESSABLE_ENTITY)
-        next(createError(UNPROCESSABLE_ENTITY, error));
+        res.status(UNAUTHORIZED)
+        next(createError(UNAUTHORIZED, error));
       });
   }
   res.status(UNAUTHORIZED)
