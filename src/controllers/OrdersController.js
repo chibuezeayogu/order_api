@@ -24,7 +24,7 @@ class OrderController {
    * else return a json response with orders and 200 status code
    * 
    * @param {Request} req 
-   * @param {Respinse} res 
+   * @param {Response} res 
    * @param {NextFunction} next 
    * 
    * @returns Response orders/error
@@ -41,7 +41,7 @@ class OrderController {
    * else return a json response with order and 200 status
    * 
   * @param {Request} req 
-   * @param {Respinse} res 
+   * @param {Response} res 
    * @param {NextFunction} next
    *  
    * @returns Response order
@@ -80,6 +80,16 @@ class OrderController {
     return resourceSuccess(res, order, 'Updated successfuly');
   }
 
+  /**
+   * Creates order if all valid params are provided
+   * else returns error
+   * 
+  * @param {Request} req 
+   * @param {Response} res 
+   * @param {NextFunction} next
+   * 
+   * @returns Response - created order
+   */
   createOrder = async (req, res, next) => {
     const [error, order] = await this
       .ordersSevice
