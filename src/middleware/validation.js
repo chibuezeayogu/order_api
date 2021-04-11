@@ -42,7 +42,7 @@ export const postInputValidator =
     check('address.city', 'City is required').notEmpty(),
     check('address.country', 'Country is required').notEmpty(),
     check('customer.name', 'Name is required').notEmpty(),
-    check('customer.email', 'Email number is required').notEmpty(),
+    check('customer.email', 'Email is required').notEmpty(),
     check('customer.phone', 'Phone number is required').notEmpty()
   ]
 
