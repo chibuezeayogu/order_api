@@ -4,10 +4,10 @@ import { expect } from 'chai';
 import app from '../src/server';
 import db from '../src/config/db';
 import ordersCollection from './mockData/orderCollection';
-import { completeData, missingTitle,token } from './mockData/orderCreate';
+import { completeData, missingTitle, token } from './mockData/orderCreate';
 
 const request = supertest(app);
-
+  
 describe('OrdersController', () => {
   beforeEach(() => {
     ordersCollection.map(doc => {
@@ -40,7 +40,7 @@ describe('OrdersController', () => {
     it('should return an error message if an invalid Id is passed', async () => {
       const { body } = await request
         .get(`/api/v1/orders/wrong_id`)
-        .set({ authorization: token })
+        .set({ Authorization: token })
         .expect(404);
       
       expect(body.success).to.eql(false)
@@ -52,7 +52,7 @@ describe('OrdersController', () => {
     it('should return an order matching the param id', async () => {
       const { body } = await request
         .get(`/api/v1/orders/hKlIKPoZc2xCKGTUKZK01`)
-        .set({ authorization: token })
+        .set({ Authorization: token })
         .expect(200);
       
       expect(body.success).to.eql(true)
@@ -65,8 +65,8 @@ describe('OrdersController', () => {
     it('should return validation error if title or bookingDate is not provided', async () => {
       const { body } = await request
         .put(`/api/v1/orders/hKlIKPoZc2xCKGTUKZK01`)
-        .send({ title: "Order title 1 Updated" })
         .set({ authorization: token })
+        .send({ title: "Order title 1 Updated" })
         .expect(422);
       
       expect(body.success).to.eql(false)
@@ -113,6 +113,7 @@ describe('OrdersController', () => {
     it('should return a validation error message if some input are not provided', async () => {
       const { body } = await request
         .post(`/api/v1/orders`)
+        .set({ Authorization: token })
         .send(missingTitle)
         .expect(422);
       
@@ -123,12 +124,12 @@ describe('OrdersController', () => {
     })
   })
 
-  describe('POST Order: /api/vi/orders/:id', () => {
-    it('should return created order with all inputs are provided', async () => {
+  describe('POST Order: /api/vi/orders', () => {
+    it('should return created order when all inputs are provided', async () => {
       const { body } = await request
         .post(`/api/v1/orders`)
+        .set({ Authorization: token })
         .send(completeData)
-        .set({ authorization: token })
         .expect(201);
 
       expect(body.success).to.eql(true)
